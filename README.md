@@ -1,4 +1,4 @@
-# 🚀 Liqwid Yield SDK
+## 💧 Liqwid Yield SDK
 
 A plug-and-play React widget for displaying [Liqwid Finance](https://liqwid.finance) yield earnings data. Easily embed yield tracking functionality into any website or React application.
 

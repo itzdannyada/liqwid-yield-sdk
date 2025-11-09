@@ -15,7 +15,6 @@ function App() {
 
           {/* Widget without address (user input) */}
           <div>
-            {/* <h3>User Input Mode</h3> */}
             <YieldWidget
               currency="USD"
             />
