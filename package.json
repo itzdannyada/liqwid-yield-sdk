@@ -1,6 +1,6 @@
 {
   "name": "liqwid-yield-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A React widget for displaying Liqwid Finance yield earnings data",
   "keywords": [
     "liqwid",
