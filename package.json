@@ -10,7 +10,6 @@
     "finance",
     "defi"
   ],
-  "homepage": "https://github.com/itzdannyada/liqwid-yield-sdk#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itzdannyada/liqwid-yield-sdk.git"
