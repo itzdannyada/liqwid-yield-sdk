@@ -36,11 +36,13 @@ const config = {
   plugins: [
     peerDepsExternal(),
     resolve({
-      browser: true
+      browser: true,
+      preferBuiltins: false
     }),
     url({
       include: ['**/*.avif', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
-      limit: 8192 // 8kb limit for inlining
+      limit: 500 * 1024, // 500KB limit for inlining (increased to handle larger images)
+      emitFiles: false // Don't emit separate files, always inline as base64
     }),
     babel({
       babelHelpers: 'bundled',
@@ -48,12 +50,33 @@ const config = {
       presets: ['@babel/preset-react'],
       extensions: ['.js', '.jsx']
     }),
-    commonjs(),
+    commonjs({
+      transformMixedEsModules: true
+    }),
+    // Inject CSS into JS instead of extracting it
     postcss({
-      extract: true,
+      extract: false, // This injects CSS into the JS bundle
+      inject: true,   // Automatically inject styles into <head>
       minimize: true
     }),
-    terser()
+    terser(),
+    // Copy type definitions after build
+    {
+      name: 'copy-types',
+      writeBundle() {
+        const fs = require('fs');
+        const path = require('path');
+        try {
+          fs.copyFileSync(
+            path.join(__dirname, 'src/widget/index.d.ts'),
+            path.join(__dirname, 'dist/index.d.ts')
+          );
+          console.log('✅ Type definitions copied to dist/index.d.ts');
+        } catch (err) {
+          console.warn('⚠️ Could not copy type definitions:', err.message);
+        }
+      }
+    }
   ],
   external: ['react', 'react-dom', 'react-dom/client']
 };

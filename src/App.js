@@ -1,5 +1,6 @@
 import './App.css';
-import YieldWidget from './widget/YieldWidget';
+// import YieldWidget from './widget/YieldWidget'; 
+import { YieldWidget } from 'liqwid-yield-sdk';
 
 function App() { 
 
