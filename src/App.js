@@ -16,14 +16,16 @@ function App() {
         </header>
 
         <div style={{ display: 'grid', gap: '40px', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-          {/* Widget with pre-filled address
+          {/* Widget with pre-filled address */}
+          {/* 
           <div>
             <h3>With Pre-filled Address</h3>
             <YieldWidget
-              addresses={exampleAddresses}
+              addresses={['addr1q86q7ntzwr...']}
               currency="GBP"
             />
-          </div> */}
+          </div> 
+          */}
 
           {/* Widget without address (user input) */}
           <div>
@@ -53,7 +55,7 @@ function App() {
           </pre>
 
           <h3>2. HTML + Script Tag Integration</h3>
-          <pre style={{ background: '#f1f5f9', padding: '16px', borderRadius: '8px', overflow: 'auto' }}>
+          <pre style={{ background: '#f1f5f9', padding: '16px', borderRadius: '8px', overflow: 'auto', text: 'left' }}>
 {`<!-- Include React and the widget script -->
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>

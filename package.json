@@ -10,6 +10,7 @@
     "finance",
     "defi"
   ],
+  "homepage": "https://liqwid-yield-sdk-demo.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itzdannyada/liqwid-yield-sdk.git"
@@ -48,7 +49,7 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "react-scripts start",
-    "build": "npm run build:widget",
+    "build": "react-scripts build",
     "build:widget": "rollup -c",
     "build:demo": "react-scripts build",
     "test": "react-scripts test",

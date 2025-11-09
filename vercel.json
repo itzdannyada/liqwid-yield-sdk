@@ -1,0 +1,16 @@
+{
+  "name": "liqwid-yield-sdk-demo",
+  "version": 2,
+  "buildCommand": "npm run build:demo",
+  "outputDirectory": "build",
+  "devCommand": "npm start",
+  "installCommand": "npm install",
+  "framework": "create-react-app",
+  "functions": {},
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
