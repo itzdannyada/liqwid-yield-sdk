@@ -349,7 +349,7 @@ const LiqwidSDK = ({
       const limitedAddresses = addresses.length > 0 ? addresses.slice(0, 200) : usedAddresses.slice(0, 200);
       fetchYieldData(limitedAddresses); 
       fetchMarketsData();
-	  fetchUtxos(limitedAddresses);
+	    fetchUtxos(limitedAddresses);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCurrency]);
@@ -357,7 +357,8 @@ const LiqwidSDK = ({
   // Process user assets when both UTXOs and markets data are available
   useEffect(() => {
     processUserAssets();
-  }, [processUserAssets]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAssets, marketsData]);
 
   // Handle wallet connection
   const handleWalletConnect = useCallback((connectedAddresses) => {
