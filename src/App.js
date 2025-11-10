@@ -1,6 +1,6 @@
 import './App.css';
-import LiqwidSDK from './widget/LiqwidSDK'; 
-// import { LiqwidSDK } from 'liqwid-yield-sdk';
+// import LiqwidSDK from './widget/LiqwidSDK'; 
+import { LiqwidSDK } from 'liqwid-yield-sdk';
 
 function App() { 
 
