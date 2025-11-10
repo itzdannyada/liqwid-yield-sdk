@@ -23,8 +23,6 @@ Live demo available at: https://liqwid-sdk-demo.vercel.app/
 
 ```bash
 npm install liqwid-sdk
-# or
-yarn add liqwid-sdk
 ```
 
 ### CDN (HTML/Vanilla JS)
@@ -99,8 +97,7 @@ function App() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `addresses` | `string[]` | `[]` | Array of Cardano addresses to fetch yield data for |
-| `currency` | `'GBP' \| 'USD' \| 'EUR' \| 'ADA'` | `'GBP'` | Display currency for yield amounts |
-| `showHeader` | `boolean` | `true` | Show/hide SDK header with currency selector 
+| `currency` | `'GBP' \| 'USD' \| 'EUR'` | `'GBP'` | Display currency for yield amounts |
 
 ## 📖 Examples
 
