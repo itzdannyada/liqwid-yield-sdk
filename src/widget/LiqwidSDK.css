@@ -150,15 +150,16 @@
 }
 
 .currency-select {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  color: white;
-  padding: 6px 12px;
-  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
-  outline: none;
   transition: all 0.2s ease;
+  outline: none;
 }
 
 .currency-select option {
@@ -168,13 +169,13 @@
 }
 
 .currency-select:hover {
-  background: rgba(0, 0, 0, 0.8);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
 .currency-select:focus {
-  background: rgba(0, 0, 0, 0.8);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
 
