@@ -166,7 +166,7 @@ import { LiqwidSDK } from 'liqwid-sdk';
 </script>`}
           </pre>
 
-          <h3 style={{ color: '#2d3748' }}>3. Configuration Options</h3>
+          <h3 style={{ color: '#2d3748', textAlign: 'left' }}>3. Configuration Options</h3>
           <div style={{ 
             display: 'grid', 
             gap: '15px', 
@@ -177,7 +177,8 @@ import { LiqwidSDK } from 'liqwid-sdk';
               background: '#f8fafc', 
               padding: '15px', 
               borderRadius: '8px',
-              border: '1px solid #e2e8f0'
+              border: '1px solid #e2e8f0',
+              textAlign: 'left'
             }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#2d3748' }}>addresses</h4>
               <p style={{ margin: 0, fontSize: '0.9rem', color: '#718096' }}>
@@ -188,7 +189,8 @@ import { LiqwidSDK } from 'liqwid-sdk';
               background: '#f8fafc', 
               padding: '15px', 
               borderRadius: '8px',
-              border: '1px solid #e2e8f0'
+              border: '1px solid #e2e8f0',
+              textAlign: 'left'
             }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#2d3748' }}>currency</h4>
               <p style={{ margin: 0, fontSize: '0.9rem', color: '#718096' }}>
