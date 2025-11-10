@@ -39,7 +39,6 @@ const SupplyModal = ({
     // Fetch UTXOs when modal opens
     useEffect(() => {
         if (isOpen) {
-            console.log('Supply Modal opened, fetching UTXOs...');
             fetchUtxos();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,20 +53,16 @@ const SupplyModal = ({
                 const walletName = localStorage.getItem("cf-last-connected-wallet");
                 
                 if (walletName && window.cardano && window.cardano[walletName.toLowerCase()]) {
-                    console.log(`Fetching UTXOs from ${walletName} wallet...`);
                     
                     try {
                         const api = await window.cardano[walletName.toLowerCase()].enable();
                         const utxosCbor = await api.getUtxos();
                         
                         if (!utxosCbor || utxosCbor.length === 0) {
-                            console.log('No UTXOs found in wallet');
                             setUtxos([]);
                             return;
                         }
 
-                        // Store CBOR UTXOs directly
-                        console.log(`Fetched ${utxosCbor.length} UTXOs from wallet`);
                         setUtxos(utxosCbor);
                         return;
                         
@@ -79,7 +74,6 @@ const SupplyModal = ({
 
             // Fallback: try to get UTXOs from Blockfrost if addresses are provided
             if (addresses && addresses.length > 0) {
-                console.log('Falling back to Blockfrost API for UTXOs...');
                 const firstAddress = addresses[0];
                 
                 const response = await fetch(`https://cardano-mainnet.blockfrost.io/api/v0/addresses/${firstAddress}/utxos`, {
@@ -91,7 +85,6 @@ const SupplyModal = ({
                 });
 
                 if (response.status === 404) {
-                    console.log(`No UTXOs found for address: ${firstAddress}`);
                     setUtxos([]);
                     return;
                 }
@@ -101,7 +94,6 @@ const SupplyModal = ({
                 }
 
                 const blockfrostUtxos = await response.json();
-                console.log(`Fetched ${blockfrostUtxos.length} UTXOs from Blockfrost`);
                 setUtxos(blockfrostUtxos);
                 return;
             } 
@@ -259,7 +251,6 @@ const SupplyModal = ({
                 utxos: formattedUtxos
             };
 
-            console.log('Supply transaction input:', supplyInput);
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -304,23 +295,18 @@ const SupplyModal = ({
                 throw new Error('Invalid response: missing CBOR data');
             }
 
-            console.log('Supply transaction CBOR received:', transactionResult.cbor);
-
             // Sign the transaction using the connected wallet
             if (isConnected) {
                 const walletName = localStorage.getItem("cf-last-connected-wallet");
                 
                 if (walletName && window.cardano && window.cardano[walletName.toLowerCase()]) {
                     try {
-                        console.log(`Signing supply transaction with ${walletName} wallet...`);
                         const api = await window.cardano[walletName.toLowerCase()].enable();
                         
                         // Sign the transaction CBOR
                         const witnessSet = await api.signTx(transactionResult.cbor, true);
-                        console.log('Supply transaction signed successfully:', witnessSet);
                         
                         // Submit the signed transaction to Liqwid API
-                        console.log('Submitting supply transaction to Liqwid API...');
                         const submitResponse = await fetch(apiUrl, {
                             method: 'POST',
                             headers: {
@@ -352,8 +338,6 @@ const SupplyModal = ({
                         }
 
                         const txHash = submitData.data?.submitTransaction;
-                        console.log('Supply transaction submitted successfully via Liqwid API:', txHash);
-                        
                         onSuccess && onSuccess({
                             success: true,
                             message: 'Supply transaction signed and submitted successfully',
@@ -375,7 +359,6 @@ const SupplyModal = ({
                 }
             } else {
                 // If not connected to wallet, just return the CBOR for manual handling
-                console.log('No wallet connected, returning CBOR for manual signing');
                 onSuccess && onSuccess({
                     success: true,
                     message: 'Supply transaction created (requires manual signing)',

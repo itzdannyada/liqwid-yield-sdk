@@ -56,8 +56,7 @@ const LiqwidSDK = ({
 	});
 
 	// Handle 404 - address has no UTXOs
-	if (response.status === 404) {
-	  console.log(`No UTXOs found for address: ${firstAddress}`);
+	if (response.status === 404) { 
 	  const results = [{
 		address: firstAddress,
 		utxos: []
@@ -341,8 +340,7 @@ const LiqwidSDK = ({
     });
     
     // Sort assets by value (descending)
-    assets.sort((a, b) => b.valueInCurrency - a.valueInCurrency);
-    console.log('Processed user assets:', assets);
+    assets.sort((a, b) => b.valueInCurrency - a.valueInCurrency); 
     setUserAssets(assets); 
   }, [utxosData, marketsData]);
 
@@ -411,11 +409,9 @@ const LiqwidSDK = ({
 
   // Handle withdraw modal
   const handleWithdrawClick = useCallback((asset) => {
-    console.log('Withdraw button clicked for asset:', asset);
-    console.log('Current UTXOs data:', utxosData);
-    console.log('Current addresses:', addresses.length > 0 ? addresses : usedAddresses);
     setSelectedAssetForWithdraw(asset);
     setIsWithdrawModalOpen(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [utxosData, addresses, usedAddresses]);
 
   const handleWithdrawClose = useCallback(() => {
@@ -424,7 +420,6 @@ const LiqwidSDK = ({
   }, []);
 
   const handleWithdrawSuccess = useCallback((transactionData) => {
-    console.log('Withdraw successful:', transactionData);
     // Refresh user data after successful withdrawal
     const currentAddresses = addresses.length > 0 ? addresses : (isConnected ? usedAddresses : []);
     if (currentAddresses.length > 0) {
@@ -442,11 +437,9 @@ const LiqwidSDK = ({
 
   // Handle supply modal
   const handleSupplyClick = useCallback((asset) => {
-    console.log('Supply button clicked for asset:', asset);
-    console.log('Current UTXOs data:', utxosData);
-    console.log('Current addresses:', addresses.length > 0 ? addresses : usedAddresses);
     setSelectedAssetForSupply(asset);
     setIsSupplyModalOpen(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [utxosData, addresses, usedAddresses]);
 
   const handleSupplyClose = useCallback(() => {
@@ -455,7 +448,6 @@ const LiqwidSDK = ({
   }, []);
 
   const handleSupplySuccess = useCallback((transactionData) => {
-    console.log('Supply successful:', transactionData);
     // Refresh user data after successful supply
     const currentAddresses = addresses.length > 0 ? addresses : (isConnected ? usedAddresses : []);
     if (currentAddresses.length > 0) {
@@ -581,17 +573,16 @@ const LiqwidSDK = ({
 
         {activeTab === 'manage' && (
           <div className="manage-tab">
-            <div className="manage-content">
-              {(!addresses.length && !isConnected) && (
-                <div className="manage-placeholder"> 
-                  <WalletConnect 
-                    onConnect={handleWalletConnect}
-                    onDisconnect={handleWalletDisconnect}
-                  />
-                </div>
-              )}
-
-              {(addresses.length > 0 || isConnected) && (
+            {(!addresses.length && !isConnected) && (
+              <div className="wallet-connect-section">
+                <WalletConnect 
+                  onConnect={handleWalletConnect}
+                  onDisconnect={handleWalletDisconnect}
+                />
+              </div>
+            )}
+            {(addresses.length > 0 || isConnected) && (
+              <div className="manage-content">
                 <div className="user-assets-section">
                   {/* General Supply Button */}
                   {!loading && marketsData && marketsData.length > 0 && (
@@ -705,8 +696,8 @@ const LiqwidSDK = ({
                     </div>
                   )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </div>
