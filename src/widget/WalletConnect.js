@@ -10,8 +10,7 @@ const WalletConnect = ({ onConnect, onDisconnect }) => {
 
   const {
     isConnected,
-    stakeAddress,
-    usedAddresses,
+    stakeAddress, 
     disconnect,
     accountBalance,
     connect,
@@ -20,14 +19,7 @@ const WalletConnect = ({ onConnect, onDisconnect }) => {
     limitNetwork: network,
   });
 
-  // Call parent callbacks when connection state changes
-  React.useEffect(() => {
-    if (isConnected && usedAddresses && usedAddresses.length > 0) {
-      onConnect?.(usedAddresses);
-    } else if (!isConnected) {
-      onDisconnect?.();
-    }
-  }, [isConnected, usedAddresses, onConnect, onDisconnect]);
+
 
   const handleDisconnect = () => {
     disconnect();
@@ -62,7 +54,7 @@ const WalletConnect = ({ onConnect, onDisconnect }) => {
       ) : (
         <div className="connect-section">
           <button
-            className="submit-button"
+            className="connect-button"
             onClick={() => setIsModalOpen(true)}
           >
             Connect Wallet

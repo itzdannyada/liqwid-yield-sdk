@@ -1,5 +1,5 @@
 import './App.css';
-// import LiqwidSDK from './widget/LiqwidSDK'; 
+// import LiqwidSDK from './widget/LiqwidSDK'; //local import for development
 import { LiqwidSDK } from 'liqwid-yield-sdk';
 
 function App() { 
@@ -14,6 +14,7 @@ function App() {
 
         <div style={{ display: 'grid', gap: '40px', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}> 
           {/* <div>
+            <h4>Address set in config:</h4>
             <LiqwidSDK
               addresses={['addr1q86q7ntzwrzx7j7rynwmaque5rlyvw6e3e4tmas8dw87qwh3k9scpg9uzp5k2w67ug04vwt8qqj74ehmlp65ry2m4xcszztsps']}
               currency="USD"
@@ -21,6 +22,7 @@ function App() {
           </div> */}
           {/* SDK without address (user input) */}
           <div>
+            <h4>No Address in config:</h4>
             <LiqwidSDK
               currency="USD"
             />

@@ -20,17 +20,17 @@ const LiqwidSDK = ({
   const [utxosData, setUtxosData] = useState(null);
   const [userAssets, setUserAssets] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [inputAddress, setInputAddress] = useState('');
+  const [error, setError] = useState(null); 
   const [selectedCurrency, setSelectedCurrency] = useState(currency); 
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+
   const [activeTab, setActiveTab] = useState('yield');
   const [isMarketModalOpen, setIsMarketModalOpen] = useState(false); 
-  const network = NetworkType.MAINNET; // You can make this configurable
+  const network = NetworkType.MAINNET;
   
 	const {
+    connect,
 		isConnected,
-	    usedAddresses,
+	  usedAddresses,
 		disconnect
 	} = useCardano({
 	  limitNetwork: network,
@@ -343,13 +343,36 @@ const LiqwidSDK = ({
     setUserAssets(assets); 
   }, [utxosData, marketsData]);
 
+  // Effect to handle initial data fetching when addresses are available or wallet connects
   useEffect(() => {
-    if ( addresses.length > 0 || usedAddresses.length >0 ) {
+    const currentAddresses = addresses.length > 0 ? addresses : (isConnected ? usedAddresses : []);
+    
+    if (currentAddresses.length > 0) {
       // Limit to first 200 addresses to avoid API overload
-      const limitedAddresses = addresses.length > 0 ? addresses.slice(0, 200) : usedAddresses.slice(0, 200);
-      fetchYieldData(limitedAddresses); 
+      const limitedAddresses = currentAddresses.slice(0, 200);
+      
+      // Fetch all data when addresses are available or wallet connects
+      fetchYieldData(limitedAddresses);
       fetchMarketsData();
-	    fetchUtxos(limitedAddresses);
+      fetchUtxos(limitedAddresses);
+    } else {
+      // Clear data when no addresses available
+      setYieldData(null);
+      setMarketsData(null);
+      setUtxosData(null);
+      setUserAssets([]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, usedAddresses.join(','), addresses.join(',')]);
+
+  // Effect to re-fetch data when currency changes (only if we have addresses)
+  useEffect(() => {
+    const currentAddresses = addresses.length > 0 ? addresses : (isConnected ? usedAddresses : []);
+    
+    if (currentAddresses.length > 0) {
+      const limitedAddresses = currentAddresses.slice(0, 200);
+      fetchYieldData(limitedAddresses);
+      fetchMarketsData();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCurrency]);
@@ -361,37 +384,27 @@ const LiqwidSDK = ({
   }, [utxosData, marketsData]);
 
   // Handle wallet connection
-  const handleWalletConnect = () => {
-    // Limit to first 200 addresses to avoid API overload
-    const limitedAddresses = usedAddresses ? usedAddresses.slice(0, 200) : addresses.slice(0, 200);
-    setIsWalletConnected(true);
-    if (limitedAddresses && limitedAddresses.length > 0) {
-      fetchYieldData(limitedAddresses);
-      fetchMarketsData();
-      fetchUtxos(limitedAddresses);
+  const handleWalletConnect = useCallback(async () => {
+    try {
+      await connect();
+      // Data fetching will be triggered by the useEffect that watches isConnected
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      setError('Failed to connect wallet');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  };
+  }, [connect]);
 
   // Handle wallet disconnection
   const handleWalletDisconnect = useCallback(() => {
-	  disconnect();
-    setIsWalletConnected(false);
+    disconnect();
+    // Clear all data when disconnecting
     setYieldData(null);
+    setMarketsData(null);
     setUtxosData(null);
     setUserAssets([]);
     setError(null);
-  }, [disconnect]);
-
-  const handleAddressSubmit = (e) => {
-    e.preventDefault();
-    if (inputAddress.trim()) {
-      // Clear wallet connection when manually entering address
-      setIsWalletConnected(false);
-      fetchYieldData([inputAddress.trim()]);
-      fetchUtxos([inputAddress.trim()]);
-    }
-  };
+    setLoading(false);
+  }, [disconnect]); 
 
   const formatCurrency = (amount, currency) => {
     if (!amount) return '0';
@@ -457,31 +470,12 @@ const LiqwidSDK = ({
       <div className="tab-content">
         {activeTab === 'yield' && (
           <div className="yield-tab">
-            {addresses.length === 0 && !isWalletConnected && (
+            {addresses.length === 0 && !isConnected && (
               <div className="wallet-connect-section">
                 <WalletConnect 
                   onConnect={handleWalletConnect}
                   onDisconnect={handleWalletDisconnect}
-                />
-                
-                <div className="or-divider">
-                  <span>or</span>
-                </div>
-                
-                <form onSubmit={handleAddressSubmit} className="address-form">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      placeholder="Enter Cardano address manually..."
-                      value={inputAddress}
-                      onChange={(e) => setInputAddress(e.target.value)}
-                      className="address-input"
-                    />
-                    <button type="submit" disabled={loading} className="submit-button">
-                      {loading ? 'Loading...' : 'Check Yield'}
-                    </button>
-                  </div>
-                </form>
+                /> 
               </div>
             )}
 
@@ -532,7 +526,7 @@ const LiqwidSDK = ({
                 </div>
               )}
 
-              {(addresses.length > 0 || isWalletConnected) && (
+              {(addresses.length > 0 || isConnected) && (
                 <div className="user-assets-section">                  
                   {loading && (
                     <div className="loading-container">
