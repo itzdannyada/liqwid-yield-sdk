@@ -54,26 +54,7 @@ function App() {
               <SiNpm size={20} />
               npm
             </a>
-          </div>
-            {/* Built by attribution */}
-            <div style={{ 
-            marginTop: '20px', 
-            textAlign: 'center',
-            fontSize: '0.9rem',
-            }}>
-            Built by{' '}
-            <a 
-              href="https://x.com/itzdannyada" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{  
-              textDecoration: 'none',
-              fontWeight: '500'
-              }}
-            >
-              itzdanny
-            </a>
-            </div>
+          </div> 
         </header>
 
         {/* Live Demo Section */}
