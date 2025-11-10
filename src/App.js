@@ -1,6 +1,6 @@
 import './App.css';
 // import LiqwidSDK from './widget/LiqwidSDK'; //local import for development
-import { LiqwidSDK } from 'liqwid-yield-sdk';
+import { LiqwidSDK } from 'liqwid-sdk';
 
 function App() { 
 
@@ -13,13 +13,13 @@ function App() {
         </header>
 
         <div style={{ display: 'grid', gap: '40px', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}> 
-          {/* <div>
+          <div>
             <h4>Address set in config:</h4>
             <LiqwidSDK
               addresses={['addr1q86q7ntzwrzx7j7rynwmaque5rlyvw6e3e4tmas8dw87qwh3k9scpg9uzp5k2w67ug04vwt8qqj74ehmlp65ry2m4xcszztsps']}
               currency="USD"
             />
-          </div> */}
+          </div>
           {/* SDK without address (user input) */}
           <div>
             <h4>No Address in config:</h4>
@@ -34,7 +34,7 @@ function App() {
           
           <h3>1. React/JSX Integration</h3>
           <pre style={{ background: '#f1f5f9', padding: '16px', borderRadius: '8px', overflow: 'auto' }}>
-{`import { LiqwidSDK } from 'liqwid-yield-sdk';
+{`import { LiqwidSDK } from 'liqwid-sdk';
 
 // Basic usage
 <LiqwidSDK />

@@ -2,7 +2,7 @@
 
 A plug-and-play React SDK for displaying [Liqwid Finance](https://liqwid.finance) yield earnings data. Easily embed yield tracking functionality into any website or React application.
 
-[![npm version](https://badge.fury.io/js/liqwid-yield-sdk.svg)](https://www.npmjs.com/package/liqwid-yield-sdk) 
+[![npm version](https://badge.fury.io/js/liqwid-sdk.svg)](https://www.npmjs.com/package/liqwid-sdk) 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
@@ -20,9 +20,9 @@ A plug-and-play React SDK for displaying [Liqwid Finance](https://liqwid.finance
 ### NPM/Yarn (React Projects)
 
 ```bash
-npm install liqwid-yield-sdk
+npm install liqwid-sdk
 # or
-yarn add liqwid-yield-sdk
+yarn add liqwid-sdk
 ```
 
 ### CDN (HTML/Vanilla JS)
@@ -33,7 +33,7 @@ yarn add liqwid-yield-sdk
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 <!-- Liqwid SDK -->
-<script src="https://unpkg.com/liqwid-yield-sdk/dist/liqwid-sdk.umd.js"></script>
+<script src="https://unpkg.com/liqwid-sdk/dist/liqwid-sdk.umd.js"></script>
 ```
 
 ## 🚀 Quick Start
@@ -42,7 +42,7 @@ yarn add liqwid-yield-sdk
 
 ```tsx
 import React from 'react';
-import { LiqwidSDK } from 'liqwid-yield-sdk';
+import { LiqwidSDK } from 'liqwid-sdk';
 
 function App() {
   return (
@@ -78,7 +78,7 @@ function App() {
   <!-- Scripts -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/liqwid-yield-sdk/dist/liqwid-sdk.umd.js"></script>
+  <script src="https://unpkg.com/liqwid-sdk/dist/liqwid-sdk.umd.js"></script>
   
   <script>
     // Initialize the SDK
@@ -108,7 +108,7 @@ function App() {
 // components/LiqwidSDK.tsx
 import dynamic from 'next/dynamic';
 
-const LiqwidSDK = dynamic(() => import('liqwid-yield-sdk'), {
+const LiqwidSDK = dynamic(() => import('liqwid-sdk'), {
   ssr: false,
   loading: () => <p>Loading Liqwid SDK...</p>
 });
@@ -149,7 +149,7 @@ Add this to your theme or use a code injection plugin:
   
   // Load SDK
   document.head.appendChild(Object.assign(document.createElement('script'), {
-    src: 'https://unpkg.com/liqwid-yield-sdk/dist/liqwid-sdk.umd.js',
+    src: 'https://unpkg.com/liqwid-sdk/dist/liqwid-sdk.umd.js',
     onload: () => {
       LiqwidSDK.create({
         elementId: 'liqwid-sdk',
@@ -172,7 +172,7 @@ export default {
   name: 'LiqwidSDK',
   async mounted() {
     // Dynamically import the SDK
-    const { LiqwidSDK } = await import('liqwid-yield-sdk/dist/liqwid-sdk.umd.js');
+    const { LiqwidSDK } = await import('liqwid-sdk/dist/liqwid-sdk.umd.js');
     
     LiqwidSDK.create({
       elementId: 'liqwid-sdk',
@@ -200,8 +200,8 @@ The SDK uses CSS custom properties for easy theming:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/liqwid-yield-sdk.git
-cd liqwid-yield-sdk
+git clone https://github.com/yourusername/liqwid-sdk.git
+cd liqwid-sdk
 
 # Install dependencies
 npm install
@@ -255,8 +255,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- 📚 [Documentation](https://github.com/yourusername/liqwid-yield-sdk)
-- 🐛 [Bug Reports](https://github.com/yourusername/liqwid-yield-sdk/issues)
+- 📚 [Documentation](https://github.com/yourusername/liqwid-sdk)
+- 🐛 [Bug Reports](https://github.com/yourusername/liqwid-sdk/issues)
 - 💬 [Twitter](https://x.com/itzdannyada)
 - 🌐 [Liqwid Finance](https://liqwid.finance)
 

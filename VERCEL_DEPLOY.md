@@ -23,7 +23,7 @@
    - Set up and deploy? **Y**
    - Which scope? Choose your account
    - Link to existing project? **N** 
-   - Project name: **liqwid-yield-sdk-demo** (or your preference)
+   - Project name: **liqwid-sdk-demo** (or your preference)
    - Directory: **./** (current directory)
    - Want to override settings? **N**
 
