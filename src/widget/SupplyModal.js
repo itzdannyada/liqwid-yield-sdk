@@ -208,7 +208,7 @@ const SupplyModal = ({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!selectedAsset) {
             setError('Please select an asset to supply');
             return;
@@ -566,7 +566,7 @@ const SupplyModal = ({
                                 ) : !amount || parseFloat(amount) <= 0 ? (
                                     'Enter Amount'
                                 ) : (
-                                    `Supply ${selectedAsset.displayName}`
+                                    `Supply ${selectedAsset.marketId}`
                                 )}
                             </button>
                         </div>

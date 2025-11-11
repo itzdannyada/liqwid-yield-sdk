@@ -308,9 +308,15 @@
   animation: fadeIn 0.5s ease-out 0.2s forwards;
 }
 
-.total-yield {
+.total-yield { 
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin: 20px 0px;
+  flex: 1;
+  padding: 20px 10px;
+  min-height: 100px;
 }
 
 .total-yield h4 { 
@@ -320,6 +326,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 0 16px 0;
 }
 
 .yield-amount {
@@ -329,6 +336,8 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin: 0;
+  line-height: 1.2;
 }
 
 /* Tooltip Styles */
