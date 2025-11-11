@@ -1,6 +1,6 @@
 import './App.css';
-import LiqwidSDK from './widget/LiqwidSDK'; //local import for development
-// import { LiqwidSDK } from 'liqwid-sdk';
+// import LiqwidSDK from './widget/LiqwidSDK'; //local import for development
+import { LiqwidSDK } from 'liqwid-sdk';
 import { SiGithub , SiNpm } from 'react-icons/si';
 
 function App() { 
