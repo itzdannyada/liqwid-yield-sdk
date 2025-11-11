@@ -735,7 +735,7 @@
 }
 
 /* Extra small screens (320px and below) */
-@media (max-width: 350px) {
+@media (max-width: 450px) {
   .header-controls {
     width: 100%;
     justify-content: space-evenly;
@@ -745,6 +745,8 @@
   
   .disconnect-button,
   .currency-select {
+    overflow: hidden;
+    max-height: 32px;
     flex: 1;
     max-width: 48%;
     text-align: center;
