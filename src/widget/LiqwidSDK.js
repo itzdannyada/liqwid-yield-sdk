@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-import {BsInfoSquareFill} from 'react-icons/bs'
 import './LiqwidSDK.css';
 import './WalletConnect.css';
 import bgImage from './bg.avif';
@@ -27,7 +25,6 @@ const LiqwidSDK = ({
   const [selectedCurrency, setSelectedCurrency] = useState(currency); 
 
   const [activeTab, setActiveTab] = useState('yield');
-  const [isMarketModalOpen, setIsMarketModalOpen] = useState(false); 
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [selectedAssetForWithdraw, setSelectedAssetForWithdraw] = useState(null);
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
@@ -414,6 +411,7 @@ const LiqwidSDK = ({
       setError(null);
       setYieldLoading(false);
       setMarketsLoading(false);
+      setActiveTab('yield');
     }, [disconnect]);
 
     // Handle withdraw modal
@@ -522,13 +520,19 @@ const LiqwidSDK = ({
             className={`tab-button ${activeTab === 'yield' ? 'active' : ''}`}
             onClick={() => {setActiveTab('yield'); setError(null); }}
           >
-            Yield Earned
+            Yield
           </button>
           <button 
             className={`tab-button ${activeTab === 'manage' ? 'active' : ''}`}
             onClick={() => {setActiveTab('manage'); setError(null); }}
           >
-            Manage
+            Supplies
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'loan' ? 'active' : ''}`}
+            onClick={() => {setActiveTab('loan'); setError(null); }}
+          >
+            Borrow
           </button>
         </div>)}
 
@@ -558,37 +562,50 @@ const LiqwidSDK = ({
               )}
 
               {yieldData && !yieldLoading && (
+                <div className="yield-results">
                   <div className="total-yield">
-                    <h4>
-                      Total Yield Earned
-                      {yieldData.markets && yieldData.markets.length > 0 && (
-                        <div className="tooltip-container">
-                          <BsInfoSquareFill  
-                            className="info-icon"
-                            onClick={() => setIsMarketModalOpen(true)}
-                            title="Click to view market breakdown"
-                          />
-                        </div>
-                      )}
-                    </h4>
+                    <h4>Total Yield Earned</h4>
                     <div className="yield-amount">
                       {formatCurrency(yieldData.totalYieldEarned, selectedCurrency)}
                     </div>
                   </div>
+
+                  {/* Market Breakdown */}
+                  {yieldData.markets && yieldData.markets.length > 0 && (
+                    <div className="markets-breakdown">
+                      <h5>Market Breakdown</h5>
+                      <div className="markets-list">
+                        {yieldData.markets
+                          .filter(market => market.amountInCurrency >= 0.01)
+                          .map((market, index) => (
+                          <div key={market.id || index} className="market-item">
+                            <div className="market-info">
+                              <img 
+                                src={`https://public.liqwid.finance/v5/assets/${(market.id).toUpperCase()}.svg`} 
+                                alt={market.id} 
+                                width={20} 
+                                height={20}
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                              <span className="market-id">{(market.id).toUpperCase()}</span>
+                            </div>
+                            <span className="market-amount">
+                              {formatCurrency(market.amountInCurrency, selectedCurrency)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )} 
             </div>
           )}
 
           {activeTab === 'manage' && (
             <div className="manage-tab">
-              {(!addresses.length && !isConnected) && (
-                <div className="wallet-connect-section">
-                  <WalletConnect 
-                    onConnect={handleWalletConnect}
-                    onDisconnect={handleWalletDisconnect}
-                  />
-                </div>
-              )}
               {(addresses.length > 0 || isConnected) && (
                 <div className="manage-content">
                   <div className="user-assets-section">
@@ -718,49 +735,31 @@ const LiqwidSDK = ({
               )}
             </div>
           )}
+
+          {activeTab === 'loan' && (
+            <div className="manage-tab">
+              <div className="borrow-coming-soon">
+                <div className="coming-soon-icon">
+                  <img src="/logo192.png" alt="liqwid" width={40} height={50}/>
+                </div>
+                <h2 className="coming-soon-title">Coming Soon</h2>
+                <h3 className="coming-soon-subtitle">Borrow Against Your Assets</h3>
+                <p className="coming-soon-description">
+                  Until this feature is added, you can borrow directly on the main <a 
+                    href="https://v2.liqwid.finance" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className='coming-soon-description'
+                  >
+                    Liqwid
+                  </a> platform.
+                </p> 
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Market Breakdown Modal */}
-        {isMarketModalOpen && yieldData && yieldData.markets && 
-          createPortal(
-            <div className="wallet-modal-overlay market-breakdown-modal" onClick={() => setIsMarketModalOpen(false)}>
-              <div className="wallet-modal" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-content">
-                  <div className="market-summary">
-                    <div className="summary-item">
-                      <span className="summary-label">Total Markets:</span>
-                      <span className="summary-value">{yieldData.markets.filter(market => market.amountInCurrency >= 0.01).length}</span>
-                    </div>
-                    <div className="summary-item">
-                      <span className="summary-label">Total Yield:</span>
-                      <span className="summary-value">
-                        {formatCurrency(yieldData.totalYieldEarned, selectedCurrency)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="market-summary">
-                    {yieldData.markets.filter(market => market.amountInCurrency > 0.01).map((market, index) => (
-                      <div key={market.id || index} className="summary-item">
-                        
-                        <span className="summary-label"><img src={`https://public.liqwid.finance/v5/assets/${(market.id).toUpperCase()}.svg`} alt={market.id} width={20} height={20}/>&nbsp;{(market.id).toUpperCase()}</span>
-                        <span className="summary-value">
-                          {formatCurrency(market.amountInCurrency, selectedCurrency)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className="cancel-button"
-                    onClick={() => setIsMarketModalOpen(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>,
-            document.body
-          )
-        }
+
 
         <div className="widget-footer">
           <a 
