@@ -208,7 +208,10 @@ const WithdrawModal = ({
         }
 
         // Use a small tolerance to handle floating point precision issues
-        const maxAvailable = Math.floor(asset.underlyingAmount * 1000000) / 1000000;
+        // Use the actual decimals from the asset (8 for USDC, 6 for DJED/USDM, etc.)
+        const decimals = asset.decimals || 6;
+        const multiplier = Math.pow(10, decimals);
+        const maxAvailable = Math.floor(asset.underlyingAmount * multiplier) / multiplier;
         if (parseFloat(amount) > maxAvailable) {
         setError('Amount exceeds available balance');
         return;
@@ -234,8 +237,11 @@ const WithdrawModal = ({
 
         const primaryAddress = addresses[0];
         
-        // Convert amount to floating point (API expects float, not smallest unit)
-        const withdrawAmount = parseFloat(amount*1000000);
+        // Convert amount to smallest unit (microunits) using the correct decimals
+        // Use Math.round to ensure we get a proper integer for BigInt conversion
+        const decimals = asset.decimals || 6;
+        const multiplier = Math.pow(10, decimals);
+        const withdrawAmount = Math.round(parseFloat(amount) * multiplier);
         
         const withdrawInput = {
             marketId: asset.marketId,
@@ -397,8 +403,10 @@ const WithdrawModal = ({
 
     const handleAmountChange = (e) => {
         const value = e.target.value;
-        // Only allow numbers and decimal points, limit to 6 decimal places
-        if (value === '' || /^\d*\.?\d{0,6}$/.test(value)) {
+        // Only allow numbers and decimal points, limit to asset's decimal places
+        const decimals = asset.decimals || 6;
+        const decimalRegex = new RegExp(`^\\d*\\.?\\d{0,${decimals}}$`);
+        if (value === '' || decimalRegex.test(value)) {
         setAmount(value);
         setError(null);
         }
@@ -406,8 +414,11 @@ const WithdrawModal = ({
 
     const setMaxAmount = () => {
         // Round down to ensure we don't exceed available balance due to precision issues
-        const roundedMax = Math.floor(asset.underlyingAmount * 1000000) / 1000000;
-        setAmount(roundedMax.toFixed(6));
+        // Use the actual decimals from the asset (8 for USDC, 6 for DJED/USDM, etc.)
+        const decimals = asset.decimals || 6;
+        const multiplier = Math.pow(10, decimals);
+        const roundedMax = Math.floor(asset.underlyingAmount * multiplier) / multiplier;
+        setAmount(roundedMax.toFixed(decimals));
         setError(null);
     };
 
@@ -429,16 +440,22 @@ const WithdrawModal = ({
                 <div>
                     <h3>Withdraw {asset.marketDisplayName}</h3>
                     <p className="available-balance">
-                    Available: {Math.floor(asset.underlyingAmount * 1000000) / 1000000 >= 0.000001 
-                        ? (Math.floor(asset.underlyingAmount * 1000000) / 1000000).toLocaleString('en-US', { 
-                            maximumFractionDigits: 6,
-                            minimumFractionDigits: 2 
-                        })
-                        : asset.underlyingAmount.toLocaleString('en-US', { 
-                            maximumFractionDigits: 6,
-                            minimumFractionDigits: 2 
-                        })
-                    }
+                    Available: {(() => {
+                        const decimals = asset.decimals || 6;
+                        const multiplier = Math.pow(10, decimals);
+                        const roundedAmount = Math.floor(asset.underlyingAmount * multiplier) / multiplier;
+                        const minDisplayAmount = 1 / multiplier; // e.g., 0.000001 for 6 decimals, 0.00000001 for 8 decimals
+                        
+                        return roundedAmount >= minDisplayAmount 
+                            ? roundedAmount.toLocaleString('en-US', { 
+                                maximumFractionDigits: decimals,
+                                minimumFractionDigits: 2 
+                            })
+                            : asset.underlyingAmount.toLocaleString('en-US', { 
+                                maximumFractionDigits: decimals,
+                                minimumFractionDigits: 2 
+                            });
+                    })()}
                     </p>
                 </div>
                 </div>

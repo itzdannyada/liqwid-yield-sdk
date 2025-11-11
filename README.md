@@ -55,8 +55,7 @@ function App() {
       {/* Pre-filled SDK */}
       <LiqwidSDK
         addresses={['address1','address2?']}
-        currency="GBP"
-        showHeader={true}
+        currency="GBP" 
       />
     </div>
   );
@@ -84,8 +83,7 @@ function App() {
     // Initialize the SDK
     LiqwidSDK.create({
       elementId: 'liqwid-sdk',
-      currency: 'USD',
-      showHeader: true
+      currency: 'USD'
     });
   </script>
 </body>

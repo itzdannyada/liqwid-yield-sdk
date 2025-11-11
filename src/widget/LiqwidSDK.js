@@ -643,10 +643,22 @@ const LiqwidSDK = ({
                               <div className="amount-row">
                                 <span className="amount-label">Supplied:</span>
                                 <span className="amount-value">
-                                  {asset.underlyingAmount.toLocaleString('en-US', { 
-                                    maximumFractionDigits: 6,
-                                    minimumFractionDigits: 2 
-                                  })}
+                                  {(() => {
+                                    const decimals = asset.decimals || 6;
+                                    const multiplier = Math.pow(10, decimals);
+                                    const roundedAmount = Math.floor(asset.underlyingAmount * multiplier) / multiplier;
+                                    const minDisplayAmount = 1 / multiplier;
+                                    
+                                    return roundedAmount >= minDisplayAmount 
+                                      ? roundedAmount.toLocaleString('en-US', { 
+                                          maximumFractionDigits: decimals,
+                                          minimumFractionDigits: 2 
+                                        })
+                                      : asset.underlyingAmount.toLocaleString('en-US', { 
+                                          maximumFractionDigits: decimals,
+                                          minimumFractionDigits: 2 
+                                        });
+                                  })()}
                                 </span>
                               </div>
                               <div className="amount-row">

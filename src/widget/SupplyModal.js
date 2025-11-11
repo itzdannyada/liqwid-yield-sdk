@@ -240,7 +240,11 @@ const SupplyModal = ({
             const primaryAddress = addresses[0];
             
             // Convert amount to smallest unit (lovelace/microunits)
-            const supplyAmount = parseFloat(amount * 1000000);
+            // Use the actual decimals from the selected asset
+            // Use Math.round to ensure we get a proper integer for BigInt conversion
+            const decimals = selectedAsset.asset?.decimals || 6;
+            const multiplier = Math.pow(10, decimals);
+            const supplyAmount = Math.round(parseFloat(amount) * multiplier);
             
             const supplyInput = {
                 marketId: selectedAsset.marketId || selectedAsset.id,
@@ -396,8 +400,10 @@ const SupplyModal = ({
 
     const handleAmountChange = (e) => {
         const value = e.target.value;
-        // Only allow numbers and decimal points
-        if (value === '' || /^\d*\.?\d*$/.test(value)) {
+        // Only allow numbers and decimal points, limit to asset's decimal places
+        const decimals = selectedAsset?.asset?.decimals || 6;
+        const decimalRegex = new RegExp(`^\\d*\\.?\\d{0,${decimals}}$`);
+        if (value === '' || decimalRegex.test(value)) {
             setAmount(value);
             setError(null);
         }
