@@ -1305,6 +1305,7 @@
   padding-right: 4px;
   padding-top: 4px;
   padding-bottom: 4px;
+
   /*min-height: 0;  Prevents overflow from expanding parent */
 }
 
@@ -1415,8 +1416,7 @@
 /* Asset Actions */
 .asset-actions {
   display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 8px; 
 }
 
 .action-button {
@@ -1483,6 +1483,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 16px;
+  margin-bottom: 8px;
 }
 
 .summary-row {
