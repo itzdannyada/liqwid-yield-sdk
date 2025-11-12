@@ -1882,6 +1882,24 @@
   font-family: inherit;
 }
 
+.asset-select::-webkit-scrollbar {
+  width: 4px;
+}
+
+.asset-select::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.asset-select::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.asset-select::-webkit-scrollbar-thumb:hover {
+  background: #33CDBA;
+}
+
 .asset-select:focus {
   outline: none;
   border-color: rgba(51, 205, 186, 0.6);
